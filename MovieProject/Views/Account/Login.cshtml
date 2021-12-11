@@ -1,0 +1,26 @@
+﻿@model LoginViewModel
+
+<div class="col-md-8" style="margin: 35px 10px 21px -19px;">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 col-md-4 col-md-offset-4">
+                <div class="account-wall">
+
+                    <form class="form-signin"  asp-controller="Account" asp-action="Login" method="post">
+                        <h2 class="card-title">Giriş Yap</h2>
+                        <p>Üyelik bilgilerinizi kullanarak portala giriş yapınız.</p>
+                        <div class="btn-danger btn-block" style="margin-bottom:10px;" asp-validation-summary="All"></div>
+                        <input type="text"asp-for="UserName"  class="form-control" style="margin-bottom:10px;" placeholder="Kullanıcı adı veya e-posta" required autofocus>
+                        <input type="password" asp-for="Password" class="form-control" placeholder="Şifre" required>
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">
+                            Giriş Yap
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -1,8 +1,15 @@
-﻿
-@{
-    ViewData["Title"] = "Detail";
+﻿@{
+    var movieTypes = (List<MovieType>)ViewData["MovieTypes"];
 }
 
+<div class="col-md-3" style="margin: 35px 10px 21px -19px;">
+    <div class="list-group">
+        @foreach (var item in movieTypes)
+        {
+            <a href="/@item.Language.Culture" class="list-group-item list-group-item-action"><b>@item.Name</b></a>
+        }
+    </div>
+</div>
 
 <div class="col-md-9" style="margin: 35px 10px 21px -19px;">
 
