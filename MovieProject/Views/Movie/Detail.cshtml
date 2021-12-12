@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Movie
+@{
     var movieTypes = (List<MovieType>)ViewData["MovieTypes"];
 }
 
@@ -17,69 +18,112 @@
         <div class="row">
             <div class="col-md-4 border-right">
                 <a href="#">
-                    <img src="https://www.intersinema.com/film/resimler/11/11969_a_1050.gif" style="width:100%;">
+                    <img src="@Model.Photo" style="width:100%;">
                 </a>
             </div>
             <div class="col-md-7">
                 <article class="card-body p-5">
                     <p class="price-detail-wrap">
                         <span class="price h3 text-warning">
-                            <span class="currency">Ayla</span>
+                            <span class="currency">@Model.Name</span>
                         </span>
                     </p>
                     <dl class="item-property">
                         <dd>
                             <p>
-                                Her şeyin başladığı 30 Eylül 1998 tarihine geri döndüğümüz hikayede, Claire Umbrella şirketini yok etmek için harekete geçiyor ve deneylerin yapıldığı yere giriş yapıyor…
-                            </p>
-                            <p>
-                                2002 yılında ilk kez karşımıza çıkan hikayenin yeniden uyarlaması olarak karşımıza çıkan Resident Evil: Raccoon Şehri filmi başrollerinde Kaya Scodelario, Robbie Amell ve Hannah John-Kamen yer alıyor.
+                                @Model.Subject
                             </p>
                         </dd>
                     </dl>
-                    <p><b>Tür : Bilim Kurgu</b></p>
-                    <p><b>Dil : Türkçe</b></p>
-                    <p><b>Tür : Bilim Kurgu</b></p>
-                    <p><b>Yönetmen : Robbie</b></p>
-                    <p><b>Oyuncular : Hannah John-Kamen, Kaya Scodelario, Robbie Amell</b></p>
-                    <p><b>Süresi : 1 saat 47</b></p>
+                    <p><b>@CultureHelper.GetValue("Type", Context) :  @Model.MovieType.Name</b></p>
+                    <p><b>@CultureHelper.GetValue("Director", Context) : @Model.Director</b></p>
+                    <p><b>@CultureHelper.GetValue("Players", Context)  : @Model.Players</b></p>
+                    <p><b>@CultureHelper.GetValue("Duration", Context)  : @Model.Duration</b></p>
                     <hr>
                 </article> <!-- card-body.// -->
             </div>
         </div>
-        <div class="embed-responsive embed-responsive-16by9">
-            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+        <div class="embed-responsive embed-responsive-16by9" style="margin-top:10px;">
+            <iframe class="embed-responsive-item" src="@Model.VideoLink"></iframe>
         </div>
         <hr />
-        <h2 class="text-center">YORUMLAR</h2>
+        <h2 class="text-center">@CultureHelper.GetValue("Comment", Context) </h2>
         <div class="card">
             <div class="card-body">
-                <blockquote class="blockquote mb-0">
-                    <footer class="blockquote-footer" style="margin-bottom:10px;">
-                        14 Aralık 2021 03:40 Muhtem bir filmdi. (Alpay Gürel)
-                    </footer>
-                    <footer class="blockquote-footer" style="margin-bottom:10px;">
-                        13 Aralık 2021 03:40 Harika bir filmdi. (Alpay Gürel)
-                    </footer>
-                    <footer class="blockquote-footer" style="margin-bottom:10px;">
-                        12 Aralık 2021 03:40 Süper bir filmdi. (Alpay Gürel)
-                    </footer>
-                    <footer class="blockquote-footer" style="margin-bottom:10px;">
-                        11 Aralık 2021 03:40 Mükemmel bir filmdi. (Alpay Gürel)
-                    </footer>
+
+                <blockquote class="blockquote mb-0" id="Comments">
                 </blockquote>
             </div>
         </div>
 
-        <form>
-            <div class="form-group">
-                <label for="exampleFormControlTextarea1" class="text-center">Sende Yorum Yap! </label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-            </div>
-            <div class="form-group">
-                <button type="button" class="btn btn-success">Yorum Yap</button>
-            </div>
-        </form>
+        @if (Context.User.Identity.IsAuthenticated)
+        {
+            var userId = Context.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier).Value;
+
+            <form id="AddComment">
+                <div class="alert alert-danger" id="CommentError" style="display:none">@CultureHelper.GetValue("CommentError ", Context)</div>
+                <input type="hidden" id="MovieID" value="@Model.ID" />
+                <input type="hidden" id="UserID" value="@userId" />
+                <input type="reset" style="display:none" id="reset" />
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1" class="text-center">@CultureHelper.GetValue("AddSubjectComment", Context)</label>
+                    <textarea class="form-control" id="CommentText" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <button type="button" onclick="AddComment()" class="btn btn-success">@CultureHelper.GetValue("AddCommentButton", Context)</button>
+                </div>
+            </form>
+        }
+        else
+        {
+            <p>@CultureHelper.GetValue("CommentLoginText ", Context) <a href="@CultureHelper.GetValue("LoginLink", Context)">@CultureHelper.GetValue("Click ", Context)</a></p>
+        }
     </div>
 </div>
 
+@section scripts{
+
+    <script>
+
+        $(document).ready(function () {
+            GetMovies();
+        });
+
+        function GetMovies() {
+            $('#Comments').html('');
+
+            $.ajax({
+                url: '/api/movie-comments',
+                method: 'GET',
+                data: { MovieID:@Model.ID},
+                success: function (res) {
+
+                    $.each(res, function (index, item) {
+                        $('#Comments').append('<footer class="blockquote-footer" style="margin-bottom:10px;"> ' + item.message + '</footer>');
+                    });
+
+                }
+            });
+        }
+
+        function AddComment() {
+            $('#CommentError').css('display', 'none');
+
+            $.ajax({
+                url: '/_AddComment',
+                method: 'POST',
+                data: { CommentText: $('#CommentText').val(), MovieID:$('#MovieID').val(), UserID:$('#UserID').val() },
+                success: function (res) {
+                    if (res == true) {
+                        GetMovies();
+                        $('#reset').click();
+                    }
+                    else {
+                        $('#CommentError').css('display', 'block');
+                    }
+                }
+            });
+        }
+    </script>
+
+}

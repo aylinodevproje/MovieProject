@@ -1,43 +1,44 @@
-﻿@{
-    var movieTypes =(List<MovieType>) ViewData["MovieTypes"];
+﻿@model List<Movie>
+@{
+    var movieTypes = (List<MovieType>)ViewData["MovieTypes"];
 }
 
 <div class="col-md-3" style="margin: 35px 10px 21px -19px;">
     <div class="list-group">
         @foreach (var item in movieTypes)
         {
-            <a href="/@item.Language.Culture" class="list-group-item list-group-item-action"><b>@item.Name</b></a>
+            <a href="/@item.Language.Culture/@item.Slug" class="list-group-item list-group-item-action"><b>@item.Name</b></a>
         }
     </div>
 </div>
 
 <div class="col-md-9" style="margin: 35px 10px 21px -19px;">
 
-
     <div class="list-group">
-
-        <div class="col-md-3" style="margin-bottom:10px;">
-            <div class="list-group-item list-group-item-action">
-                <a href="#">
-                    <img src="https://www.intersinema.com/film/resimler/11/11969_a_1050.gif" style="width:100%; height:205px;" class="img-rounded" alt="Cinque Terre">
-                    <div class="clearfix"></div>
-                    <div class="col-md-12" style="margin-top:10px;margin-bottom:10px;">
-                        <div class="text-center"><b>Ayla</b></div>
-                    </div>
-                    <div class="col-md-6">
-                        <i class="fa fa-comment-o" aria-hidden="true"></i>
-                        <label> 64</label>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="text-right">
-                            <i class="fa fa-star" aria-hidden="true" style="color:yellow"></i>
-                            <label>8.7</label>
+        @foreach (var item in Model)
+        {
+            <div class="col-md-3" style="margin-bottom:10px;">
+                <div class="list-group-item list-group-item-action">
+                    <a href="/@item.MovieType.Language.Culture/@item.MovieType.Slug/@item.Slug">
+                        <img src="@item.Photo" style="width:100%; height:205px;" class="img-rounded" alt="Cinque Terre">
+                        <div class="clearfix"></div>
+                        <div class="col-md-12" style="margin-top:10px;margin-bottom:10px;">
+                            <div class="text-center"><b>@item.Name</b></div>
                         </div>
-                    </div>
-
-                    <div class="clearfix"></div>
-                </a>
+                        <div class="col-md-6">
+                            <i class="fa fa-comment-o" aria-hidden="true"></i>
+                            <label> @item.MovieComments.Count</label>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="text-right">
+                                <i class="fa fa-star" aria-hidden="true" style="color:yellow"></i>
+                                <label>@item.Imdb</label>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </a>
+                </div>
             </div>
-        </div>
+        }
     </div>
 </div>

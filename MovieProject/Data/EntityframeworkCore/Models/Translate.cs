@@ -1,11 +1,12 @@
 ﻿namespace MovieProject.Data.EntityframeworkCore.Models
 {
-    //Film türlerini simgeleyen sınıftır.
-    public class MovieType
+    //Farklı dillere göre cümle , kelime translate işlemini gerçekleştiren sınıftır.
+    public class Translate
     {
         public int ID { get; set; }
-        public string Name { get; set; }
-        public string Slug { get; set; }
+        public string Key { get; set; }
+        public string Value { get; set; }
+
         public virtual int LanguageID { get; set; }
         public virtual Language Language { get; set; }
     }

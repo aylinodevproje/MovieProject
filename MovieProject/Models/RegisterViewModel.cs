@@ -1,7 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace MovieProject.Models
+﻿namespace MovieProject.Models
 {
+    //Kayıt olurken view tarafı ve back-end tarafı arasında parametre sınıfıdr.
     public class RegisterViewModel
     {
         public string FullName { get; set; }

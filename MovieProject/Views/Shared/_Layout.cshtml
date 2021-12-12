@@ -6,8 +6,6 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <script src="/lib/jquery/dist/jquery.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top" style="background-color: brown;">
@@ -18,55 +16,60 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-controller="Movie" asp-action="Index" class="navbar-brand">
+                <a href="/" class="navbar-brand">
                     Film Portalı
                 </a>
             </div>
             <div class=" collapse navbar-collapse  ">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Movie" asp-action="Index">
+                        <a class="nav-link" href="/@Context.Request.Path.Value.Split("/")[1]">
                             <i class="fa fa-home" aria-hidden="true"></i>
-                            Anasayfa
+                            @CultureHelper.GetValue("Home", Context)
                         </a>
                     </li>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li class="nav-item" >
-                            <a class="nav-link" href="#" >
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
                                 <i class="fa fa-user" aria-hidden="true"></i>
                                 @User.Identity.Name
                             </a>
                         </li>
-                        <li class="nav-item" >
+                        <li class="nav-item">
 
-                            <a class="nav-link"  asp-controller="Account" asp-action="LogOut"style="background-color: gray">
+                            <a class="nav-link" href="@CultureHelper.GetValue("LogoutLink", Context)" style="background-color: gray">
                                 <i class="fa fa-key" aria-hidden="true"></i>
-                                Çıkış Yap
-
+                                @CultureHelper.GetValue("Logout", Context)
                             </a>
                         </li>
                     }
                     else
                     {
-                        <li class="nav-item"  >
-                            <a class="nav-link" asp-controller="Account" asp-action="Register">
+                        <li class="nav-item">
+                            <a class="nav-link" href="@CultureHelper.GetValue("RegisterLink", Context)">
                                 <i class="fa fa-user-plus" aria-hidden="true"></i>
-                                Üye Ol
+                                @CultureHelper.GetValue("Register", Context)
                             </a>
                         </li>
                         <li class="nav-item">
 
-                            <a class="nav-link" asp-controller="Account" asp-action="Login">
+                            <a class="nav-link" href="@CultureHelper.GetValue("LoginLink", Context)">
                                 <i class="fa fa-key" aria-hidden="true"></i>
-                                Giriş Yap
+                                @CultureHelper.GetValue("Login", Context)
                             </a>
                         </li>
                     }
 
-
                     <li class="nav-item ">
-                        <a class="nav-link" href="GirisYap"><i class="fa fa-language" aria-hidden="true"></i> Türkçe </a>
+                        @{
+                            var reverseLanguage = CultureHelper.ReverseLanguage(Context);
+                        }
+
+                        <a class="nav-link" href="/@reverseLanguage.Culture">
+                            <i class="fa fa-language" aria-hidden="true"></i>
+                            @CultureHelper.GetValue(reverseLanguage.Culture, Context)
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -85,6 +88,6 @@
     </div>
     <script src="/lib/jquery/dist/jquery.js"></script>
     <script src="/lib/bootstrap/dist/js/bootstrap.js"></script>
-
+    @RenderSection("scripts", false)
 </body>
 </html>
