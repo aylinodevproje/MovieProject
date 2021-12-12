@@ -1,0 +1,34 @@
+﻿@model List<Translate>
+@{
+    ViewData["Title"] = "TranslateList";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h3>Translate</h3>
+<a href="/translate-ekle" class="btn btn-success pull-right" style="margin-bottom:10px;">Translate Ekle</a>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Key</th>
+            <th scope="col">Value</th>
+            <th scope="col">Dil Adı</th>
+            <th scope="col" style="width:150px;">#</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th scope="row">@item.ID</th>
+                <td>@item.Key</td>
+                <td>@item.Value</td>
+                <td>@item.Language.Name</td>
+                <td>
+                    <a class="btn btn-primary" asp-action="UpdateTranslate" asp-controller="Admin" asp-route-id="@item.ID">Güncelle</a>
+                    <a class="btn btn-danger" asp-action="DeleteTranslate" asp-controller="Admin" asp-route-id="@item.ID">Sil</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

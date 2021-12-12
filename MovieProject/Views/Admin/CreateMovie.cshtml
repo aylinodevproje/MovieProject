@@ -1,0 +1,62 @@
+﻿@model Movie
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+
+    var movieTypes = (List<MovieType>)ViewData["MovieTypes"];
+}
+<form class="form-signin" action="@Context.Request.Path" method="post" enctype="multipart/form-data">
+
+    <h2 class="card-title">Film  Ekle</h2>
+
+    <div asp-validation-summary="All" style="margin-bottom:10px;" data-valmsg-summary="true">
+        <ul>
+            <li style="display:none"></li>
+        </ul>
+    </div>
+
+    <select class="form-control" asp-for="MovieTypeID" style="margin-bottom:10px;font-size:14px;">
+        @foreach (var item in movieTypes)
+        {
+            if (Model != null && item.ID == Model.MovieTypeID)
+            {
+                <option value="@item.ID" selected="selected">@item.Name</option>
+            }
+            else
+            {
+                <option value="@item.ID">@item.Name</option>
+            }
+        }
+    </select>
+
+    <input asp-for="Name" id="name" onkeyup="GenerateSlug()" type="text" style="margin-bottom:10px;font-size:14px;" class="form-control" placeholder="Film Adı" required="">
+
+    <input asp-for="Slug" id="slug" type="text" style="margin-bottom:10px;font-size:14px" class="form-control" placeholder="Slug" required="">
+
+    <input asp-for="Director" type="text" style="margin-bottom:10px;font-size:14px;" class="form-control" placeholder="Yönetmen" required="">
+
+    <input asp-for="Duration" type="text" style="margin-bottom:10px;font-size:14px;" class="form-control" placeholder="Süre" required="">
+
+    <input asp-for="Players" type="text" style="margin-bottom:10px;font-size:14px;" class="form-control" placeholder="Oyuncular" required="">
+
+    <input asp-for="VideoLink" type="text" style="margin-bottom:10px;font-size:14px;" class="form-control" placeholder="Youtube Video Link" required="">
+
+    <input asp-for="Imdb" type="text" style="margin-bottom:10px;font-size:14px;" class="form-control" placeholder="Imdb" required="">
+
+    <textarea tyle="margin-bottom:10px;font-size:14px;" asp-for="Subject" class="form-control" placeholder="Film Hakkında Bilgi" cols="4"></textarea>
+
+    <label tyle="margin-bottom:10px;font-size:14px;">Fotoğraf</label>
+    <input type="file" name="file" id="file" style="margin-bottom:10px;font-size:14px;" class="form-control" />
+
+    <input class="btn btn-lg btn-primary btn-block" style="font-size:14px;" type="submit" value="Kaydet">
+</form>
+
+@section scripts{
+    <script>
+        function GenerateSlug() {
+            var name = $('#name').val();
+            $.get('/slug?phrase=' + name, function (res) {
+                $('#slug').val(res);
+            })
+        }
+    </script>
+}

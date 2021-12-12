@@ -55,7 +55,7 @@ namespace MovieProject
 
             //Authorization yetkilendirme iþlemleri için aktif hale getirilen metod
             app.UseAuthorization();
-            
+
             //Authentication iþlemleri için aktif hale getirilen metod
             app.UseAuthentication();
 
@@ -66,15 +66,16 @@ namespace MovieProject
             });
         }
     }
+
     //Routing ayarlarýnýn gerçekleþtirildiði ve  aktif dilin HttpContext ile taþýnabilir hale getirildiði sýnýftýr.
     public class TranslationTransformer : DynamicRouteValueTransformer
     {
         private const string StartCulture = "/tr";
         private const string StartController = "Movie";
         private const string StartAction = "Index";
+
         public override async ValueTask<RouteValueDictionary> TransformAsync(HttpContext httpContext, RouteValueDictionary values)
         {
-
             var context = (DataContext)httpContext.RequestServices.GetService(typeof(DataContext));
 
             if (httpContext.Request.Path == "/")
@@ -92,7 +93,6 @@ namespace MovieProject
             else
             {
                 var culture = httpContext.Request.Path.Value.Split("/")[1];
-
 
                 var language = context.Language.Where(x => x.Culture.ToLower() == culture.ToLower()).ToList().FirstOrDefault();
 
@@ -113,5 +113,3 @@ namespace MovieProject
         }
     }
 }
-
-

@@ -51,6 +51,11 @@ namespace MovieProject.Controllers
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(identity));
 
+                if (user.IsAdmin)
+                {
+                    return RedirectToAction("Index", "Admin");
+                }
+
                 return Redirect("/" + Language.Culture);
             }
 

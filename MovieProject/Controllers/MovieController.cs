@@ -24,13 +24,20 @@ namespace Proje.Controllers
 
         public IActionResult Index()
         {
+            var slugSplit = HttpContext.Request.Path.Value.Split("/").Where(x => !string.IsNullOrEmpty(x)).ToList();
+
             //Türlerin kullanıcı diline göre view tarafına ViewData ile gönderilmesi
             ViewData["MovieTypes"] = _context.MovieType.Where(x => x.Language.ID == Language.ID)
-                                                   .OrderBy(x => x.Name)
-                                                   .ToList();
+                                                                                        .OrderBy(x => x.Name)
+                                                                                        .ToList();
 
             //Filmlerin kullanıcı diline göre view tarafına View metodu tarafından iletilmesi.
-            return View(_context.Movie.Where(x => x.MovieType.LanguageID == Language.ID).OrderByDescending(x => x.ID).ToList());
+            if (slugSplit.Count > 1)
+                return View(
+                    _context.Movie.Where(x => x.MovieType.LanguageID == Language.ID && x.MovieType.Slug == slugSplit[1]).OrderByDescending(x => x.ID).ToList());
+            else
+                return View(
+                    _context.Movie.Where(x => x.MovieType.LanguageID == Language.ID).OrderByDescending(x => x.ID).ToList());
         }
 
         #endregion Anasayfa görevi veya Film türlerine göre açılan sayfadır.

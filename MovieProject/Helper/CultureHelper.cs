@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace MovieProject.Helper
 {
-    public static class CultureHelper
+    public static class CultureHelper //Dil ve Translate işlemleri için oluşturulan sınıftır.
     {
         public static Language ReverseLanguage(HttpContext context)//Aktif dilin tersini geri veriri.
         {

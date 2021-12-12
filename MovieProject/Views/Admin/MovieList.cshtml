@@ -1,0 +1,40 @@
+﻿@model List<Movie>
+@{
+    ViewData["Title"] = "UserList";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h3>Filmler</h3>
+<a href="/film-ekle" class="btn btn-success pull-right" style="margin-bottom:10px;">Film Ekle</a>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Türü</th>
+            <th scope="col">Adı</th>
+            <th scope="col">Bilgi</th>
+            <th scope="col">Imdb</th>
+            <th scope="col">Yorum Sayısı</th>
+            <th scope="col" style="width:150px;">#</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th scope="row">@item.ID</th>
+                <td>@item.MovieType.Name</td>
+                <td>@item.Name</td>
+                <td>@item.Subject</td>
+                <td>@item.Imdb</td>
+                <td>
+                    @item.MovieComments.Count
+                </td>
+                <td>
+                    <a class="btn btn-primary" asp-action="UpdateMovie" asp-controller="Admin" asp-route-id="@item.ID">Güncelle</a>
+                    <a class="btn btn-danger" asp-action="DeleteMovie" asp-controller="Admin" asp-route-id="@item.ID">Sil</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

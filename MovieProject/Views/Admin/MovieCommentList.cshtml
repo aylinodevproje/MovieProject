@@ -1,0 +1,32 @@
+﻿@model List<MovieComment>
+@{
+    ViewData["Title"] = "UserList";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h3>Yorumlar</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Film Adı</th>
+            <th scope="col">Ad Soyad</th>
+            <th scope="col">Yorum</th>
+            <th scope="col" style="width:150px;">#</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th scope="row">@item.ID</th>
+                <td>@item.Movie.Name</td>
+                <td>@item.User.FullName</td>
+                <td>@item.CommentText</td>
+                <td>
+                    <a class="btn btn-danger" asp-action="DeleteMovieComment" asp-controller="Admin" asp-route-id="@item.ID">Sil</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
