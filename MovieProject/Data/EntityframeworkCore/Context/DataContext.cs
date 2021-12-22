@@ -29,10 +29,10 @@ namespace MovieProject.Data.EntityframeworkCore.Context
           {
               ID = 1,
               FullName = "Aylin Aydın",
-              Email = "u13121030@sakarya.edu.tr",
+              Email = "u131210030@sakarya.edu.tr",
               IsAdmin = true,
               Password = "123",
-              UserName = "u13121030@sakarya.edu.tr"
+              UserName = "u131210030@sakarya.edu.tr"
           });
 
             #endregion

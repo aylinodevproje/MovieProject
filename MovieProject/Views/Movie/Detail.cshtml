@@ -85,6 +85,7 @@
 
     <script>
 
+        //Ekran ilk açıldığı anda javascript
         $(document).ready(function () {
             GetMovies();
         });
@@ -92,6 +93,7 @@
         function GetMovies() {
             $('#Comments').html('');
 
+            //Sayfanın yenilenmeden API üzerinden yorumları çekmesi.
             $.ajax({
                 url: '/api/movie-comments',
                 method: 'GET',
