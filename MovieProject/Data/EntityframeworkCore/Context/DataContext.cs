@@ -28,21 +28,12 @@ namespace MovieProject.Data.EntityframeworkCore.Context
           new User()
           {
               ID = 1,
-              FullName = "Alpay Gürel",
-              Email = "alpay.gurel",
+              FullName = "Aylin Aydın",
+              Email = "u13121030@sakarya.edu.tr",
               IsAdmin = true,
-              Password = "weasd123",
-              UserName = "alpay.gurel"
-          },
-           new User()
-           {
-               ID = 2,
-               FullName = "Alpay Gürel2",
-               Email = "alpay.gurel2",
-               IsAdmin = true,
-               Password = "weasd123",
-               UserName = "alpay.gurel2"
-           });
+              Password = "123",
+              UserName = "u13121030@sakarya.edu.tr"
+          });
 
             #endregion
 
